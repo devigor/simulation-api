@@ -1,0 +1,16 @@
+services:
+  db:
+    image: postgres:14
+    container_name: solar-api
+    restart: always
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: solar
+    ports:
+      - "2345:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
