@@ -7,7 +7,7 @@ export enum UserRole {
   SUPERUSER = 'SUPERUSER'
 }
 
-@Entity()
+@Entity("users")
 export class User {
   @PrimaryGeneratedColumn()
   id!: number;

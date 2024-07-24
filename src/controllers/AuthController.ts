@@ -4,7 +4,6 @@ import { AuthService } from '../services/authService';
 const authService = new AuthService();
 
 export const register = async (req: Request, res: Response) => {
-  console.log("caiu na register")
   try {
     const { name, email, password } = req.body;
     const user = await authService.register(name, email, password);

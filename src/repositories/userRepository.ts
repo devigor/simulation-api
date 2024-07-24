@@ -8,8 +8,8 @@ export class UserRepository {
     return this.userRepo.findOne({ where: { email } });
   }
 
-  async findById(id): Promise<User | undefined> {
-    return this.userRepo.findOne(id);
+  async findById(id: number): Promise<User | undefined> {
+    return this.userRepo.findOne({ where: { id } });
   }
 
   async findAll(): Promise<User[]> {

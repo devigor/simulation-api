@@ -1,11 +1,28 @@
 import { Request, Response } from 'express';
 import { UserService } from '../services/userService';
 
+declare global {
+  namespace Express {
+    interface Request {
+      user?: Record<string,any>;
+    }
+  }
+}
+
 const userService = new UserService();
+
+export const getMeUser = async (req: Request, res: Response) => {
+  const user = await userService.getUserById(req.user.id);
+  res.status(200).json({
+    id: user.id,
+    name: user.name,
+    role: user.role,
+  });
+}
 
 export const getAllUsers = async (req: Request, res: Response) => {
   const users = await userService.getAllUsers();
-  return res.json(users);
+  res.json(users);
 };
 
 export const updateUser = async (req: Request, res: Response) => {
@@ -13,9 +30,9 @@ export const updateUser = async (req: Request, res: Response) => {
     const { id } = req.params;
     const { name, email, password } = req.body;
     const user = await userService.updateUser(parseInt(id, 10), name, email, password);
-    return res.json(user);
+    res.json(user);
   } catch (error) {
-    return res.status(400).json({ message: error.message });
+    res.status(400).json({ message: error.message });
   }
 };
 
@@ -23,8 +40,8 @@ export const deleteUser = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     await userService.deleteUser(parseInt(id, 10));
-    return res.json({ message: 'Usuário deletado' });
+    res.json({ message: 'Usuário deletado' });
   } catch (error) {
-    return res.status(400).json({ message: error.message });
+    res.status(400).json({ message: error.message });
   }
 };

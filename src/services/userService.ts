@@ -5,6 +5,10 @@ import { User } from '../entity/User';
 export class UserService {
   private userRepository = new UserRepository();
 
+  async getUserById(id: number) {
+    return this.userRepository.findById(id);
+  }
+
   async getAllUsers() {
     return this.userRepository.findAll();
   }

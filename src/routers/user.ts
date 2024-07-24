@@ -1,9 +1,12 @@
 import { Router } from 'express';
-import { getAllUsers, updateUser, deleteUser } from '../controllers/UserController';
+import { getAllUsers, updateUser, deleteUser, getMeUser } from '../controllers/UserController';
+import { authMiddleware } from '../middlewares/authMiddleware';
+import { superuserMiddleware } from '../middlewares/superUserMiddleware';
 
 export const userRouter = Router();
 
-userRouter.get('/admin/users', getAllUsers);
-userRouter.put('/admin/user/:id', updateUser);
-userRouter.delete('/admin/user/:id', deleteUser);
+userRouter.get('/me', [authMiddleware], getMeUser);
+userRouter.get('/', [authMiddleware, superuserMiddleware], getAllUsers);
+userRouter.put('/:id', [authMiddleware, superuserMiddleware], updateUser);
+userRouter.delete('/:id', [authMiddleware, superuserMiddleware], deleteUser);
 
