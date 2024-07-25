@@ -3,6 +3,7 @@ import { SimulationService } from "../services/simulationService";
 import { Simulation } from "../entity/Simulation";
 import { getPowerValue } from "../utils/power";
 import { fetchPage, filterItemsByPower } from "../external/GeradoresApi";
+import { PdfCreateProps, createPdfSimulation } from "../utils/pdf";
 
 const simulationService = new SimulationService();
 
@@ -26,12 +27,8 @@ export const saveSimulation = async (req: Request, res: Response) => {
       return;
     }
 
-
-    const simulation = new Simulation(req.user.id, new Date());
-    const itens = await fetchPage(1);
-    const response = filterItemsByPower(itens, power);
     // await simulationService.save(simulation);
-    res.status(201).json({ response });
+    res.status(201).json();
   } catch (error) {
     console.log(error)
     res.status(400).json({ message: error.message });

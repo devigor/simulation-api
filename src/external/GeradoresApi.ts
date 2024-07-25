@@ -3,7 +3,7 @@ import axios from 'axios';
 export type Gerador = {
   id: string
   name: string
-  price: string
+  price: string | number
   panels: string
   power: string | number
   image: string
