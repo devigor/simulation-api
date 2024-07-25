@@ -7,7 +7,6 @@ import { userRouter } from "./routers/user";
 import { authRouter } from "./routers/auth";
 import { simulationRouter } from "./routers/simulation";
 import { createReports } from "./services/cronService";
-import { log } from "console";
 
 dotenv.config();
 const app = express();
@@ -31,6 +30,6 @@ AppDataSource.initialize()
   });
 
 // Roda a cada 10min
-cron.schedule('*/10 * * * *', async () => {
+cron.schedule('* * * * * *', async () => {
   await createReports();
 })

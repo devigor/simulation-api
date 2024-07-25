@@ -7,11 +7,69 @@ import { Gerador, fetchAllItems, filterItemsByPower } from "../external/Geradore
 import { UserService } from "./userService";
 import { PdfCreateProps, createPdfSimulation } from "../utils/pdf";
 import { StatusEnum } from '../entity/Simulation';
+import { sendEmail } from './mailService';
+
+const MOCK = [
+  {
+    id: '1',
+    name: 'Sistema Gerador Solar Fotovoltaico Huawei HUA-9275 - Solo',
+    price: "67500.00",
+    power: '13.50',
+    panels: '45',
+    image: 'https://i.ibb.co/z6zH4n9/kit-energia-solar-fotovoltaica.png',
+    updated_at: ""
+  },
+  {
+    id: '2',
+    name: 'Sistema Gerador Solar Fotovoltaico Huawei HUA-9275 - Solo',
+    price: "67500.00",
+    power: '13.50',
+    panels: '45',
+    image: 'https://i.ibb.co/z6zH4n9/kit-energia-solar-fotovoltaica.png',
+    updated_at: ""
+  },
+  {
+    id: '3',
+    name: 'Sistema Gerador Solar Fotovoltaico Huawei HUA-9275 - Solo',
+    price: "67500.00",
+    power: '13.50',
+    panels: '45',
+    image: 'https://i.ibb.co/z6zH4n9/kit-energia-solar-fotovoltaica.png',
+    updated_at: ""
+  },
+  {
+    id: '4',
+    name: 'Sistema Gerador Solar Fotovoltaico Huawei HUA-9275 - Solo',
+    price: "67500.00",
+    power: '13.50',
+    panels: '45',
+    image: 'https://i.ibb.co/z6zH4n9/kit-energia-solar-fotovoltaica.png',
+    updated_at: ""
+  },
+  {
+    id: '5',
+    name: 'Sistema Gerador Solar Fotovoltaico Huawei HUA-9275 - Solo',
+    price: "67500.00",
+    power: '13.50',
+    panels: '45',
+    image: 'https://i.ibb.co/z6zH4n9/kit-energia-solar-fotovoltaica.png',
+    updated_at: ""
+  },
+  {
+    id: '6',
+    name: 'Sistema Gerador Solar Fotovoltaico Huawei HUA-9275 - Solo',
+    price: "67500.00",
+    power: '13.50',
+    panels: '45',
+    image: 'https://i.ibb.co/z6zH4n9/kit-energia-solar-fotovoltaica.png',
+    updated_at: ""
+  }
+];
+
+const simulationService = new SimulationService();
+const userService = new UserService();
 
 export const createReports = async () => {
-  const simulationService = new SimulationService();
-  const userService = new UserService();
-
   const simulations = await simulationService.findAllPendingSimulations();
 
   if (simulations.length === 0) {
@@ -30,15 +88,22 @@ export const createReports = async () => {
       const powerValue = calculatePower(simulation.value);
 
       // Buscar na api os geradores
-      const allGenerators = await fetchAllItems();
-      const filterGenerators = filterItemsByPower(allGenerators, powerValue);
+      // const allGenerators = await fetchAllItems();
+      // const filterGenerators = filterItemsByPower(allGenerators, powerValue);
 
       const formattedDate = formatDate(new Date(simulation.simulationDate), 'dd/MM/yy', { locale: ptBR });
 
       // Gerar o PDF
-      const fileName = await createPdf(user.name, formattedDate, filterGenerators);
+      const fileName = await createPdf(user.name, formattedDate, MOCK);
 
-      // Enviar por email
+      // Enviar email
+      await sendEmail({
+        to: user.email,
+        subject: 'Resultado da simulação',
+        text: `Olá ${user.name}! Com muito carinho que recebemos sua solicitação de simulação, abaixo você vai encontrar o PDF com todas as informações necessárias!`,
+        filename: `simulacao-${user.name.replace(' ', '-')}.pdf`,
+        pdfPath: fileName
+      });
 
       // Atualizar no banco de dados
       simulation.filename = fileName;
@@ -59,7 +124,7 @@ export const calculatePower = (lightValue: string) => {
   return getPowerValue(lightValue, powerCoefficient);
 }
 
-export const createPdf = async (name: string, date: string, items: Gerador[]): Promise<string> => {
+export const createPdf = async (name: string, date: string, items: Gerador[]) => {
   const pdfContent: PdfCreateProps = {
     title: 'Portal Solar',
     text: `Olá ${name}! Aqui está o resultado da sua simulação solicitada no dia ${date}!`,

@@ -34,8 +34,16 @@ export class SimulationRepository {
     return query.getMany();
   }
 
-  async findAllPendingSimulations(): Promise<Simulation[]> {
-    return this.simulationRepo.find({ where: { status: Equal(StatusEnum.PENDING) } });
+  async findAllPendingSimulations(): Promise<Simulation[] | []> {
+    const simulations = await this.simulationRepo.find({ where: { status: Equal(StatusEnum.PENDING) } });
+
+    if (simulations.length === 0) return [];
+
+    return simulations;
+  }
+
+  async findAllCompletedSimulations(): Promise<Simulation[]> {
+    return this.simulationRepo.find({ where: { status: Equal(StatusEnum.COMPLETED) } });
   }
 
   async updateSimulation(simulationId: number, simulation: Simulation): Promise<void> {

@@ -20,8 +20,12 @@ export class SimulationService {
     return this.simulationRepository.findSimulationsByCreationDate(userId, justCount);
   }
 
-  async findAllPendingSimulations(): Promise<Simulation[]> {
+  async findAllPendingSimulations(): Promise<Simulation[] | []> {
     return this.simulationRepository.findAllPendingSimulations();
+  }
+
+  async findAllCompletedSimulations(): Promise<Simulation[]> {
+    return this.simulationRepository.findAllCompletedSimulations();
   }
 
   async updateSimulation(simulationId: number, simulation: Simulation): Promise<void> {
