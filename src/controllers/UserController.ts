@@ -37,7 +37,7 @@ export const updateUser = async (req: Request, res: Response) => {
     const { id } = req.params;
     const { name, email, password } = req.body;
     const user = await userService.updateUser(parseInt(id, 10), name, email, password);
-    res.json(user);
+    res.json();
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
