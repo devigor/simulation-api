@@ -22,7 +22,14 @@ export const getMeUser = async (req: Request, res: Response) => {
 
 export const getAllUsers = async (req: Request, res: Response) => {
   const users = await userService.getAllUsers();
-  res.json(users);
+  res.json(users.map(user => {
+    return {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+    };
+  }));
 };
 
 export const updateUser = async (req: Request, res: Response) => {

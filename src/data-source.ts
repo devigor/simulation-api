@@ -3,6 +3,7 @@ import { config } from "dotenv";
 config();
 import { DataSource } from "typeorm"
 import { User } from "./entity/User"
+import { Simulation } from "./entity/Simulation";
 
 const { DB_HOST, DB_PORT, DB_USERNAME, DB_PASSWORD, DB_DATABASE, NODE_ENV } =
   process.env;
@@ -16,7 +17,7 @@ export const AppDataSource = new DataSource({
     database: DB_DATABASE,
     synchronize: false,
     logging: NODE_ENV === "dev" ? true : false,
-    entities: [User],
+    entities: [User, Simulation],
     migrations: [__dirname + "/migration/*.ts"],
     subscribers: [],
 })

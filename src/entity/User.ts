@@ -1,6 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
 import { IsEmail, Length } from 'class-validator';
 import { hashPassword } from '../utils/hash';
+import { Simulation } from './Simulation';
 
 export enum UserRole {
   USER = 'USER',
@@ -26,6 +27,9 @@ export class User {
 
   @Column({ type: 'enum', enum: UserRole, default: UserRole.USER })
   role!: UserRole;
+
+  @OneToMany(() => Simulation, simulation => simulation.user)
+  simulations: Simulation[];
 
   @CreateDateColumn()
   createdAt!: Date;
