@@ -11,4 +11,12 @@ export class SimulationService {
   async remove(simulation: Simulation): Promise<void> {
     await this.simulationRepository.remove(simulation);
   }
+
+  async findSimulationsByUserId(userId: number): Promise<Simulation[]> {
+    return this.simulationRepository.findSimulationsByUserId(userId);
+  }
+
+  async findSimulationsByCreationDate(userId: number, justCount?: boolean): Promise<Simulation[] | number> {
+    return this.simulationRepository.findSimulationsByCreationDate(userId, justCount);
+  }
 }

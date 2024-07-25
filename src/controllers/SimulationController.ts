@@ -1,9 +1,6 @@
 import { Request, Response } from "express";
 import { SimulationService } from "../services/simulationService";
 import { Simulation } from "../entity/Simulation";
-import { getPowerValue } from "../utils/power";
-import { fetchPage, filterItemsByPower } from "../external/GeradoresApi";
-import { PdfCreateProps, createPdfSimulation } from "../utils/pdf";
 
 const simulationService = new SimulationService();
 
@@ -17,18 +14,23 @@ declare global {
 
 export const saveSimulation = async (req: Request, res: Response) => {
   try {
-    const { COEFICIENTE_DE_POTENCIA } = process.env;
     const { lightValue }: { lightValue: string } = req.body;
-
-    const power = getPowerValue(lightValue, COEFICIENTE_DE_POTENCIA);
 
     if (!lightValue) {
       res.status(400).json({ error: 'Necessário informar o valor da conta!' });
       return;
     }
 
-    // await simulationService.save(simulation);
-    res.status(201).json();
+    const numberOfSimulations = await simulationService.findSimulationsByCreationDate(req.user.id, true) as number;
+
+    if (numberOfSimulations > 4) {
+      return res.status(400).json({ message: "Número máximo de simulações atingido!" })
+    }
+
+    const newSimulation = new Simulation(req.user.id, new Date(), lightValue);
+
+    await simulationService.save(newSimulation);
+    res.status(201).json({ message: "Simulação feita com sucesso, em breve enviaremos um email com nossa proposta!" });
   } catch (error) {
     console.log(error)
     res.status(400).json({ message: error.message });
