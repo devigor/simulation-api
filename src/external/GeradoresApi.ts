@@ -15,7 +15,7 @@ export type AxiosRequest = {
 }
 
 const BASE_URL = 'https://my.api.mockaroo.com/geradores?key=630e7920';
-const ITEMS_PER_PAGE = 10;
+const ITEMS_PER_PAGE = 50;
 const TOTAL_ITEMS = 2000;
 const TOTAL_PAGES = Math.ceil(TOTAL_ITEMS / ITEMS_PER_PAGE);
 

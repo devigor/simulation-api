@@ -1,6 +1,6 @@
 import { Equal } from "typeorm";
 import { AppDataSource } from "../data-source";
-import { Simulation } from "../entity/Simulation";
+import { Simulation, StatusEnum } from "../entity/Simulation";
 
 export class SimulationRepository {
   private simulationRepo = AppDataSource.getRepository(Simulation);
@@ -32,5 +32,13 @@ export class SimulationRepository {
     }
 
     return query.getMany();
+  }
+
+  async findAllPendingSimulations(): Promise<Simulation[]> {
+    return this.simulationRepo.find({ where: { status: Equal(StatusEnum.PENDING) } });
+  }
+
+  async updateSimulation(simulationId: number, simulation: Simulation): Promise<void> {
+    await this.simulationRepo.update(simulationId, simulation);
   }
 }

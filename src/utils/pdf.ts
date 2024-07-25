@@ -22,11 +22,13 @@ const downloadImage = async (url: string): Promise<string> => {
   return fileName;
 };
 
-export const createPdfSimulation = async (content: PdfCreateProps): Promise<void> => {
+export const createPdfSimulation = async (content: PdfCreateProps): Promise<string> => {
   const { items, title, text } = content;
 
+  const fileName = `public/simulations/simulation-${uuidv4()}-simulation.pdf`;
+
   const doc = new PDFDocument({ size: 'A4', margin: 50 });
-  const stream = fs.createWriteStream(`public/simulation-${uuidv4()}-simulation.pdf`);
+  const stream = fs.createWriteStream(fileName);
   doc.pipe(stream);
 
   const pageWidth = doc.page.width;
@@ -95,4 +97,6 @@ export const createPdfSimulation = async (content: PdfCreateProps): Promise<void
   stream.on('finish', () => {
     console.log('PDF created successfully');
   });
+
+  return fileName
 };

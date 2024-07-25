@@ -1,9 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn, Column } from 'typeorm';
-import { User } from './User';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 export enum StatusEnum {
   PENDING = 'PENDING',
-  COMPLETED = 'COMPLETED'
+  COMPLETED = 'COMPLETED',
+  IN_PROGRESS = 'IN_PROGRESS'
 }
 
 @Entity("simulations")

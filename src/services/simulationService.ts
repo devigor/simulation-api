@@ -1,4 +1,4 @@
-import { Simulation } from "../entity/Simulation";
+import { Simulation, StatusEnum } from "../entity/Simulation";
 import { SimulationRepository } from "../repositories/simulationRepository";
 
 export class SimulationService {
@@ -18,5 +18,13 @@ export class SimulationService {
 
   async findSimulationsByCreationDate(userId: number, justCount?: boolean): Promise<Simulation[] | number> {
     return this.simulationRepository.findSimulationsByCreationDate(userId, justCount);
+  }
+
+  async findAllPendingSimulations(): Promise<Simulation[]> {
+    return this.simulationRepository.findAllPendingSimulations();
+  }
+
+  async updateSimulation(simulationId: number, simulation: Simulation): Promise<void> {
+    return this.simulationRepository.updateSimulation(simulationId, simulation);
   }
 }
