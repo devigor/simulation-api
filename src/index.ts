@@ -29,7 +29,7 @@ AppDataSource.initialize()
     process.exit(1);
   });
 
-// Roda a cada 10min
+// Roda a cada segundo
 cron.schedule('* * * * * *', async () => {
   await createReports();
 })
