@@ -88,13 +88,13 @@ export const createReports = async () => {
       const powerValue = calculatePower(simulation.value);
 
       // Buscar na api os geradores
-      // const allGenerators = await fetchAllItems();
-      // const filterGenerators = filterItemsByPower(allGenerators, powerValue);
+      const allGenerators = await fetchAllItems();
+      const filterGenerators = filterItemsByPower(allGenerators, powerValue);
 
       const formattedDate = formatDate(new Date(simulation.simulationDate), 'dd/MM/yy', { locale: ptBR });
 
       // Gerar o PDF
-      const fileName = await createPdf(user.name, formattedDate, MOCK);
+      const fileName = await createPdf(user.name, formattedDate, filterGenerators);
 
       // Enviar email
       await sendEmail({
