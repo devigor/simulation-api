@@ -13,7 +13,7 @@
 
 ```sh
 $ git clone https://github.com/devigor/simulation-api && cd simulation-api
-$ docker compose -f ./docker/docker-compose.yml
+$ docker compose -f ./docker/docker-compose.yml up -d
 $ npm i
 ```
 
