@@ -19,6 +19,8 @@ $ npm i
 
 Criar o arquivo `.env` com as seguintes chaves
 
+**ATENÇÃO:** Caso a conta Google possua autenticação em dois fatores, deve-se criar uma senha [aqui](https://security.google.com/settings/security/apppasswords)!
+
 ```env
 DB_HOST="localhost"
 DB_PORT=2345
